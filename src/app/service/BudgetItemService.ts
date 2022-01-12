@@ -21,28 +21,15 @@ export class BudgetItemService {
     return this._allBudgetItems$;
   }
 
-  set allBudgetItems$(value: Observable<BudgetItem[]>) {
-    this._allBudgetItems$ = value;
+  public getDepartmentIdList(budgetItems: BudgetItem[]): number[] {
+    const budgetItemGroupSet = new Set<number>();
+    for (let budgetItem of budgetItems) {
+      budgetItemGroupSet.add(budgetItem.department_id);
+    }
+    return Array.from(budgetItemGroupSet);
   }
 
-  public getDepartmentNameById(departmentId: number, budgetItems: BudgetItem[]): string {
-    return budgetItems.find(budgetItem => budgetItem.department_id === departmentId).department_nm;
-  }
-
-  public getGroupNameById(groupId: number, budgetItems: BudgetItem[]): string {
-    return budgetItems.find(budgetItem => budgetItem.group_id === groupId).group_nm;
-  }
-
-  public getCategoryNameById(categoryId: number, budgetItems: BudgetItem[]): string {
-    return budgetItems.find(budgetItem => budgetItem.category_id === categoryId).category_nm;
-  }
-
-  public getSubCategoryNameById(subCategoryId: number, budgetItems: BudgetItem[]): string {
-    return budgetItems.find(budgetItem => budgetItem.sub_cat_id === subCategoryId).sub_cat_nm;
-  }
-
-
-  public getGroupList(budgetItems: BudgetItem[]): number[] {
+  public getGroupIdList(budgetItems: BudgetItem[]): number[] {
     const budgetItemGroupSet = new Set<number>();
     for (let budgetItem of budgetItems) {
       budgetItemGroupSet.add(budgetItem.group_id);
@@ -50,7 +37,7 @@ export class BudgetItemService {
     return Array.from(budgetItemGroupSet);
   }
 
-  public getCategoryList(groupId: number, budgetItems: BudgetItem[]): number[] {
+  public getCategoryIdList(groupId: number, budgetItems: BudgetItem[]): number[] {
     const budgetItemCategorySet = new Set<number>();
     for (let budgetItem of budgetItems) {
       if (budgetItem.group_id === groupId) {
@@ -60,7 +47,7 @@ export class BudgetItemService {
     return Array.from(budgetItemCategorySet);
   }
 
-  public getSubCategoryList(categoryId: number, budgetItems: BudgetItem[]): number[] {
+  public getSubCategoryIdList(categoryId: number, budgetItems: BudgetItem[]): number[] {
     const budgetItemSubCategorySet = new Set<number>();
     for (let budgetItem of budgetItems) {
       if (budgetItem.category_id === categoryId) {
@@ -68,6 +55,25 @@ export class BudgetItemService {
       }
     }
     return Array.from(budgetItemSubCategorySet);
+  }
+
+  calculateDepartmentBudget(departmentId: number, budgetItems: BudgetItem[]): number {
+    let departmentAmountList = new Set<number>();
+    budgetItems.forEach(item => departmentAmountList.add(Number(item.current_cat_am)));
+    return Array.from(departmentAmountList).reduce((acc, value) => acc += value);
+  }
+
+  calculateGroupBudget(groupId: number, budgetItems: BudgetItem[]): number {
+    return Number(budgetItems.find(item => item.group_id === groupId).current_cat_am);
+  }
+
+  calculateCategoryBudget(categoryId: number, budgetItems: BudgetItem[]): number {
+    return Number(budgetItems.find(item => item.category_id === categoryId).current_cat_am);
+
+  }
+
+  calculateSubCategoryBudget(subCategoryId: number, budgetItems: BudgetItem[]): number {
+    return Number(budgetItems.find(item => item.sub_cat_id === subCategoryId).current_sub_cat_am);
   }
 
 

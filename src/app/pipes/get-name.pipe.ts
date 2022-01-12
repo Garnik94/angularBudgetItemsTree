@@ -1,4 +1,4 @@
-import { Pipe, PipeTransform } from '@angular/core';
+import {Pipe, PipeTransform} from '@angular/core';
 import {BudgetItem} from "../model/BudgetItem";
 
 @Pipe({
@@ -7,12 +7,14 @@ import {BudgetItem} from "../model/BudgetItem";
 export class GetNamePipe implements PipeTransform {
 
   transform(value: number, fieldName: string, budgetItems: BudgetItem[]): string {
-    if (fieldName === "Group"){
+    if (fieldName === "Group") {
       return budgetItems.find(budgetItem => budgetItem.group_id === value).group_nm;
     } else if (fieldName === "Category") {
       return budgetItems.find(budgetItem => budgetItem.category_id === value).category_nm;
-    } else {
+    } else if (fieldName === "SubCategory") {
       return budgetItems.find(budgetItem => budgetItem.sub_cat_id === value).sub_cat_nm;
+    } else {
+      return budgetItems.find(budgetItem => budgetItem.department_id === value).department_nm;
     }
 
   }

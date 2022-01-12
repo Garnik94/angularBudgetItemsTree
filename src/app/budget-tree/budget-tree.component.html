@@ -1,34 +1,68 @@
-<p>budget-tree works!</p>
-<button (click)="printResponse()">Print json</button>
+<table>
 
-<div>
-  <button (click)="isGroupPressed = !isGroupPressed">↓</button>Marketing
+  <tr style="border-bottom: solid">
+    <td>
+      <div *ngFor="let itemDepartmentId of budgetItemService.getDepartmentIdList(budgetItemService.allBudgetItems$ | async); let departmentIndex = index">
+        <button (click)="isGroupPressed = !isGroupPressed">↓</button>
+        {{itemDepartmentId | getName: "Department": (budgetItemService.allBudgetItems$ | async)}}
 
-  <div style="margin-left: 50px" *ngIf="isGroupPressed">
-    <div *ngFor="let itemGroupId of budgetItemService.getGroupList(budgetItemService.allBudgetItems$ | async); let i = index">
-<!--      <button (click)="isCategoryPressed = !isCategoryPressed">↓</button>-->
-      <button (click)="isCategoryPressed[i] = !isCategoryPressed[i]">↓</button>
-      {{itemGroupId | getName: "Group": (budgetItemService.allBudgetItems$ | async)}}
+        <div style="margin-left: 50px" *ngIf="isGroupPressed">
+          <div
+            *ngFor="let itemGroupId of budgetItemService.getGroupIdList(budgetItemService.allBudgetItems$ | async); let groupIndex = index">
 
-      <div style="margin-left: 50px" *ngIf="isCategoryPressed[i]">
-        <div
-          *ngFor="let itemCategoryId of budgetItemService.getCategoryList(itemGroupId, budgetItemService.allBudgetItems$ | async)">
-          <button>↓</button>
-          {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
+            <tr>
+              <td>
+                <button (click)="isCategoryPressed[groupIndex] = !isCategoryPressed[groupIndex]">↓</button>
+                {{itemGroupId | getName: "Group": (budgetItemService.allBudgetItems$ | async)}}
+                <div style="margin-left: 50px" *ngIf="isCategoryPressed[groupIndex]">
+                  <div
+                    *ngFor="let itemCategoryId of budgetItemService.getCategoryIdList(itemGroupId, budgetItemService.allBudgetItems$ | async); let categoryIndex = index">
 
+                    <tr>
+                      <td>
+                        <button
+                          (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">
+                          ↓
+                        </button>
+                        {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
+                        <div style="margin-left: 50px" *ngIf="isSubCategoryPressed[groupIndex][categoryIndex]">
+                          <div
+                            *ngFor="let itemSubCategoryId of budgetItemService.getSubCategoryIdList(itemCategoryId, budgetItemService.allBudgetItems$ | async)">
 
-          <div style="margin-left: 50px" *ngIf="isCategoryPressed[i]">
-            <div
-              *ngFor="let itemSubCategoryId of budgetItemService.getSubCategoryList(itemCategoryId, budgetItemService.allBudgetItems$ | async)">
-<!--              <button>↓</button>-->
-              {{itemSubCategoryId | getName: "SubCategory": (budgetItemService.allBudgetItems$ | async)}}
+                            <tr>
+                              <td>
+                                {{itemSubCategoryId | getName: "SubCategory": (budgetItemService.allBudgetItems$ | async)}}
+                              </td>
 
-            </div>
+                              <td>
+                                {{budgetItemService.calculateSubCategoryBudget(itemSubCategoryId, budgetItemService.allBudgetItems$ | async)}}
+                              </td>
+                            </tr>
 
+                          </div>
+
+                        </div>
+                      </td>
+
+                      <td>
+                        {{budgetItemService.calculateCategoryBudget(itemCategoryId, budgetItemService.allBudgetItems$ | async)}}
+                      </td>
+                    </tr>
+                  </div>
+                </div>
+              </td>
+              <td>{{budgetItemService.calculateGroupBudget(itemGroupId, budgetItemService.allBudgetItems$ | async)}}</td>
+            </tr>
+          </div>
         </div>
-
       </div>
-    </div>
 
-  </div>
-</div>
+      </td>
+
+      <td>
+        {{budgetItemService.calculateDepartmentBudget(2, budgetItemService.allBudgetItems$ | async)}}
+      </td>
+
+  </tr>
+
+</table>

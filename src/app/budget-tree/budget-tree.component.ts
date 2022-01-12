@@ -22,28 +22,23 @@ export class BudgetTreeComponent implements OnInit {
 
   pushValueInCategoryPressed() {
     this.budgetItemService.allBudgetItems$.subscribe(items => {
-        for (let groupId of this.budgetItemService.getGroupList(items)) {
+        for (let groupId of this.budgetItemService.getGroupIdList(items)) {
           this.isCategoryPressed.push(false);
         }
       }
     )
   }
 
-  //TODO: Need to fix
   pushValueInSubCategoryPressed() {
     this.budgetItemService.allBudgetItems$.subscribe(items => {
-        for (let groupId of this.budgetItemService.getGroupList(items)) {
-          for (let categoryId of this.budgetItemService.getCategoryList(groupId, items))
-          this.isSubCategoryPressed.push(Array<boolean>(groupId));
+        for (let groupId of this.budgetItemService.getGroupIdList(items)) {
+          for (let categoryId of this.budgetItemService.getCategoryIdList(groupId, items))
+            this.isSubCategoryPressed.push(Array<boolean>(this.budgetItemService.getCategoryIdList(groupId, items).length));
         }
         console.log(this.isSubCategoryPressed)
       }
     )
   }
 
-  printResponse() {
-    this.budgetItemService.allBudgetItems$
-      .subscribe(data => console.log(data));
-  }
 
 }
