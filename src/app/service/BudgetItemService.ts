@@ -69,7 +69,6 @@ export class BudgetItemService {
 
   calculateCategoryBudget(categoryId: number, budgetItems: BudgetItem[]): number {
     return Number(budgetItems.find(item => item.category_id === categoryId).current_cat_am);
-
   }
 
   calculateSubCategoryBudget(subCategoryId: number, budgetItems: BudgetItem[]): number {

@@ -40,5 +40,36 @@ export class BudgetTreeComponent implements OnInit {
     )
   }
 
+  shawAllDepartments() {
+    this.isGroupPressed = false;
+    this.isCategoryPressed.fill(false);
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+      this.isSubCategoryPressed[i].fill(false);
+    }
+  }
+
+  shawAllGroups() {
+    this.isGroupPressed = true;
+    this.isCategoryPressed.fill(false);
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+      this.isSubCategoryPressed[i].fill(false);
+    }
+  }
+
+  shawAllCategories() {
+    this.isGroupPressed = true;
+    this.isCategoryPressed.fill(true);
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+      this.isSubCategoryPressed[i].fill(false);
+    }
+  }
+
+  shawAllSubCategories() {
+    this.isGroupPressed = true;
+    this.isCategoryPressed.fill(true);
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+      this.isSubCategoryPressed[i].fill(true);
+    }
+  }
 
 }

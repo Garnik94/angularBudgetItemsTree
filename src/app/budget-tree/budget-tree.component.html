@@ -1,5 +1,17 @@
 <table>
 
+  <tr>
+    <td>
+      <button (click)="shawAllDepartments()">Department</button>
+      <button (click)="shawAllGroups()">Group</button>
+      <button (click)="shawAllCategories()" >Category</button>
+      <button (click)="shawAllSubCategories()" >Sub-Category</button>
+    </td>
+    <td>Budget</td>
+  </tr>
+
+  <br>
+
   <tr style="border-bottom: solid">
     <td>
       <div *ngFor="let itemDepartmentId of budgetItemService.getDepartmentIdList(budgetItemService.allBudgetItems$ | async); let departmentIndex = index">
@@ -21,8 +33,7 @@
                     <tr>
                       <td>
                         <button
-                          (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">
-                          ↓
+                          (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">↓
                         </button>
                         {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
                         <div style="margin-left: 50px" *ngIf="isSubCategoryPressed[groupIndex][categoryIndex]">
