@@ -9,16 +9,36 @@ import {BudgetItemService} from "../service/BudgetItemService";
 export class BudgetTreeComponent implements OnInit {
 
   isGroupPressed: boolean = false;
-  isCategoryPressed: boolean = false;
-
-  shawAdvertising() {
-
-  }
+  isCategoryPressed: boolean[] = []
+  isSubCategoryPressed: Array<boolean[]> = [];
 
   constructor(public budgetItemService: BudgetItemService) {
   }
 
   ngOnInit(): void {
+    this.pushValueInCategoryPressed();
+    this.pushValueInSubCategoryPressed();
+  }
+
+  pushValueInCategoryPressed() {
+    this.budgetItemService.allBudgetItems$.subscribe(items => {
+        for (let groupId of this.budgetItemService.getGroupList(items)) {
+          this.isCategoryPressed.push(false);
+        }
+      }
+    )
+  }
+
+  //TODO: Need to fix
+  pushValueInSubCategoryPressed() {
+    this.budgetItemService.allBudgetItems$.subscribe(items => {
+        for (let groupId of this.budgetItemService.getGroupList(items)) {
+          for (let categoryId of this.budgetItemService.getCategoryList(groupId, items))
+          this.isSubCategoryPressed.push(Array<boolean>(groupId));
+        }
+        console.log(this.isSubCategoryPressed)
+      }
+    )
   }
 
   printResponse() {

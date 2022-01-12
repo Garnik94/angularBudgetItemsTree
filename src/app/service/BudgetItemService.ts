@@ -25,30 +25,50 @@ export class BudgetItemService {
     this._allBudgetItems$ = value;
   }
 
-  public getBudgetItemDepartment(departmentId: number, budgetItems: BudgetItem[]): string {
-    return budgetItems.find(budgetItem => budgetItem.department_id == departmentId).department_nm;
+  public getDepartmentNameById(departmentId: number, budgetItems: BudgetItem[]): string {
+    return budgetItems.find(budgetItem => budgetItem.department_id === departmentId).department_nm;
   }
 
-  public getBudgetItemGroupList(budgetItems: BudgetItem[]): string[] {
-    const budgetItemGroupSet = new Set<string>();
+  public getGroupNameById(groupId: number, budgetItems: BudgetItem[]): string {
+    return budgetItems.find(budgetItem => budgetItem.group_id === groupId).group_nm;
+  }
+
+  public getCategoryNameById(categoryId: number, budgetItems: BudgetItem[]): string {
+    return budgetItems.find(budgetItem => budgetItem.category_id === categoryId).category_nm;
+  }
+
+  public getSubCategoryNameById(subCategoryId: number, budgetItems: BudgetItem[]): string {
+    return budgetItems.find(budgetItem => budgetItem.sub_cat_id === subCategoryId).sub_cat_nm;
+  }
+
+
+  public getGroupList(budgetItems: BudgetItem[]): number[] {
+    const budgetItemGroupSet = new Set<number>();
     for (let budgetItem of budgetItems) {
-      // if (budgetItem.department_nm === departmentName){
-        budgetItemGroupSet.add(budgetItem.group_nm);
-      // }
+      budgetItemGroupSet.add(budgetItem.group_id);
     }
     return Array.from(budgetItemGroupSet);
   }
 
-  public getBudgetItemCategoryList(budgetItems: BudgetItem[]): string[] {
-    const budgetItemCategorySet = new Set<string>();
+  public getCategoryList(groupId: number, budgetItems: BudgetItem[]): number[] {
+    const budgetItemCategorySet = new Set<number>();
     for (let budgetItem of budgetItems) {
-      // if (budgetItem.department_nm === departmentName){
-      budgetItemCategorySet.add(budgetItem.category_nm);
-      // }
+      if (budgetItem.group_id === groupId) {
+        budgetItemCategorySet.add(budgetItem.category_id);
+      }
     }
     return Array.from(budgetItemCategorySet);
   }
 
+  public getSubCategoryList(categoryId: number, budgetItems: BudgetItem[]): number[] {
+    const budgetItemSubCategorySet = new Set<number>();
+    for (let budgetItem of budgetItems) {
+      if (budgetItem.category_id === categoryId) {
+        budgetItemSubCategorySet.add(budgetItem.sub_cat_id);
+      }
+    }
+    return Array.from(budgetItemSubCategorySet);
+  }
 
 
 }

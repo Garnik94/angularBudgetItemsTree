@@ -4,33 +4,31 @@
 <div>
   <button (click)="isGroupPressed = !isGroupPressed">↓</button>Marketing
 
-  <div *ngIf="isGroupPressed">
-    <div *ngFor="let item of budgetItemService.getBudgetItemGroupList(budgetItemService.allBudgetItems$ | async)">
-      <button (click)="isCategoryPressed = !isCategoryPressed">↓</button>{{item}}
-      <div *ngIf="isCategoryPressed">
-        <div *ngFor="let item of budgetItemService.getBudgetItemCategoryList(budgetItemService.allBudgetItems$ | async)">
-          <button>↓</button>{{item}}
+  <div style="margin-left: 50px" *ngIf="isGroupPressed">
+    <div *ngFor="let itemGroupId of budgetItemService.getGroupList(budgetItemService.allBudgetItems$ | async); let i = index">
+<!--      <button (click)="isCategoryPressed = !isCategoryPressed">↓</button>-->
+      <button (click)="isCategoryPressed[i] = !isCategoryPressed[i]">↓</button>
+      {{itemGroupId | getName: "Group": (budgetItemService.allBudgetItems$ | async)}}
+
+      <div style="margin-left: 50px" *ngIf="isCategoryPressed[i]">
+        <div
+          *ngFor="let itemCategoryId of budgetItemService.getCategoryList(itemGroupId, budgetItemService.allBudgetItems$ | async)">
+          <button>↓</button>
+          {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
+
+
+          <div style="margin-left: 50px" *ngIf="isCategoryPressed[i]">
+            <div
+              *ngFor="let itemSubCategoryId of budgetItemService.getSubCategoryList(itemCategoryId, budgetItemService.allBudgetItems$ | async)">
+<!--              <button>↓</button>-->
+              {{itemSubCategoryId | getName: "SubCategory": (budgetItemService.allBudgetItems$ | async)}}
+
+            </div>
+
+        </div>
+
       </div>
-
     </div>
+
   </div>
-
-<!--  <div *ngIf="isGroupingPressed">-->
-<!--    <button>↓</button>Artist Development/Promo Events-->
-<!--  </div>-->
-
-<!--  <div *ngIf="isGroupingPressed">-->
-<!--    <button>↓</button>Artwork-->
-<!--  </div>-->
-
-<!--  <div *ngIf="isGroupingPressed">-->
-<!--    <button>↓</button>Coop/Retail Marketing-->
-<!--  </div>-->
-
-<!--  <div *ngIf="isGroupingPressed">-->
-<!--    <button>↓</button>Coop/Retail Marketing-->
-<!--  </div>-->
-
-
 </div>
-

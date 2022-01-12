@@ -5,11 +5,13 @@ import {AppComponent} from './app.component';
 import {HttpClientModule} from "@angular/common/http";
 import {BudgetTreeComponent} from './budget-tree/budget-tree.component';
 import {BudgetItemService} from "./service/BudgetItemService";
+import { GetNamePipe } from './pipes/get-name.pipe';
 
 @NgModule({
   declarations: [
     AppComponent,
-    BudgetTreeComponent
+    BudgetTreeComponent,
+    GetNamePipe
   ],
   imports: [
     BrowserModule,
