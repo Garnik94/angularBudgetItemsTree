@@ -1,5 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {BudgetItemService} from "../service/BudgetItemService";
+import {Observable} from "rxjs";
+import {map} from "rxjs/operators";
+import {BudgetItem} from "../model/BudgetItem";
 
 @Component({
   selector: 'budget-tree',
@@ -43,7 +46,7 @@ export class BudgetTreeComponent implements OnInit {
   shawAllDepartments() {
     this.isGroupPressed = false;
     this.isCategoryPressed.fill(false);
-    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++) {
       this.isSubCategoryPressed[i].fill(false);
     }
   }
@@ -51,7 +54,7 @@ export class BudgetTreeComponent implements OnInit {
   shawAllGroups() {
     this.isGroupPressed = true;
     this.isCategoryPressed.fill(false);
-    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++) {
       this.isSubCategoryPressed[i].fill(false);
     }
   }
@@ -59,7 +62,7 @@ export class BudgetTreeComponent implements OnInit {
   shawAllCategories() {
     this.isGroupPressed = true;
     this.isCategoryPressed.fill(true);
-    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++) {
       this.isSubCategoryPressed[i].fill(false);
     }
   }
@@ -67,9 +70,20 @@ export class BudgetTreeComponent implements OnInit {
   shawAllSubCategories() {
     this.isGroupPressed = true;
     this.isCategoryPressed.fill(true);
-    for (let i = 0; i < this.isSubCategoryPressed.length; i++){
+    for (let i = 0; i < this.isSubCategoryPressed.length; i++) {
       this.isSubCategoryPressed[i].fill(true);
     }
   }
+
+  getLevelsCount(item: BudgetItem[]): number[]  {
+    let countOfLevels = 0;
+    for (let key in item[0]){
+      if (key.includes("id")){
+        countOfLevels++;
+      }
+    }
+    return Array(countOfLevels);
+  }
+
 
 }

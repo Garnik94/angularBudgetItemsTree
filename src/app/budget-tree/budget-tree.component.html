@@ -1,79 +1,44 @@
-<table>
+<button (click)="shawAllDepartments()">Department</button>
+<button (click)="shawAllGroups()">Group</button>
+<button (click)="shawAllCategories()">Category</button>
+<button (click)="shawAllSubCategories()">Sub-Category</button>
 
-  <tr>
-    <td>
-      <button (click)="shawAllDepartments()">Department</button>
-      <button (click)="shawAllGroups()">Group</button>
-      <button (click)="shawAllCategories()" >Category</button>
-      <button (click)="shawAllSubCategories()" >Sub-Category</button>
-    </td>
-    <td>Budget</td>
-  </tr>
+<br>
 
-  <br>
+<ul style="list-style-type: none;">
+  {{"JSON depth = " + getLevelsCount(budgetItemService.allBudgetItems$ | async).length}}
+  <li
+    *ngFor="let itemDepartmentId of budgetItemService.getDepartmentIdList(budgetItemService.allBudgetItems$ | async); let departmentIndex = index">
+    <button (click)="isGroupPressed = !isGroupPressed">↓</button>
 
-  <tr style="border-bottom: solid">
-    <td>
-      <div *ngFor="let itemDepartmentId of budgetItemService.getDepartmentIdList(budgetItemService.allBudgetItems$ | async); let departmentIndex = index">
-        <button (click)="isGroupPressed = !isGroupPressed">↓</button>
-        {{itemDepartmentId | getName: "Department": (budgetItemService.allBudgetItems$ | async)}}
+    {{itemDepartmentId | getName: "Department": (budgetItemService.allBudgetItems$ | async)}}
 
-        <div style="margin-left: 50px" *ngIf="isGroupPressed">
-          <div
-            *ngFor="let itemGroupId of budgetItemService.getGroupIdList(budgetItemService.allBudgetItems$ | async); let groupIndex = index">
+    <span>{{budgetItemService.calculateDepartmentBudget(2, budgetItemService.allBudgetItems$ | async)}}</span>
 
-            <tr>
-              <td>
-                <button (click)="isCategoryPressed[groupIndex] = !isCategoryPressed[groupIndex]">↓</button>
-                {{itemGroupId | getName: "Group": (budgetItemService.allBudgetItems$ | async)}}
-                <div style="margin-left: 50px" *ngIf="isCategoryPressed[groupIndex]">
-                  <div
-                    *ngFor="let itemCategoryId of budgetItemService.getCategoryIdList(itemGroupId, budgetItemService.allBudgetItems$ | async); let categoryIndex = index">
+    <ul *ngIf="isGroupPressed" style="list-style-type: none;">
+      <li
+        *ngFor="let itemGroupId of budgetItemService.getGroupIdList(budgetItemService.allBudgetItems$ | async); let groupIndex = index">
+        <button (click)="isCategoryPressed[groupIndex] = !isCategoryPressed[groupIndex]">↓</button>
+        {{itemGroupId | getName: "Group": (budgetItemService.allBudgetItems$ | async)}}
+        <span>{{budgetItemService.calculateGroupBudget(itemGroupId, budgetItemService.allBudgetItems$ | async)}}</span>
+        <ul *ngIf="isCategoryPressed[groupIndex]" style="list-style-type: none;">
+          <li
+            *ngFor="let itemCategoryId of budgetItemService.getCategoryIdList(itemGroupId, budgetItemService.allBudgetItems$ | async); let categoryIndex = index">
+            <button (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">↓</button>
+            {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
+            <span>{{budgetItemService.calculateCategoryBudget(itemCategoryId, budgetItemService.allBudgetItems$ | async)}}</span>
+            <ul *ngIf="isSubCategoryPressed[groupIndex][categoryIndex]" style="list-style-type: none;">
+              <li
+                *ngFor="let itemSubCategoryId of budgetItemService.getSubCategoryIdList(itemCategoryId, budgetItemService.allBudgetItems$ | async)">
+                {{itemSubCategoryId | getName: "SubCategory": (budgetItemService.allBudgetItems$ | async)}}
+                <span>{{budgetItemService.calculateSubCategoryBudget(itemSubCategoryId, budgetItemService.allBudgetItems$ | async)}}</span>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
 
-                    <tr>
-                      <td>
-                        <button
-                          (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">↓
-                        </button>
-                        {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
-                        <div style="margin-left: 50px" *ngIf="isSubCategoryPressed[groupIndex][categoryIndex]">
-                          <div
-                            *ngFor="let itemSubCategoryId of budgetItemService.getSubCategoryIdList(itemCategoryId, budgetItemService.allBudgetItems$ | async)">
 
-                            <tr>
-                              <td>
-                                {{itemSubCategoryId | getName: "SubCategory": (budgetItemService.allBudgetItems$ | async)}}
-                              </td>
-
-                              <td>
-                                {{budgetItemService.calculateSubCategoryBudget(itemSubCategoryId, budgetItemService.allBudgetItems$ | async)}}
-                              </td>
-                            </tr>
-
-                          </div>
-
-                        </div>
-                      </td>
-
-                      <td>
-                        {{budgetItemService.calculateCategoryBudget(itemCategoryId, budgetItemService.allBudgetItems$ | async)}}
-                      </td>
-                    </tr>
-                  </div>
-                </div>
-              </td>
-              <td>{{budgetItemService.calculateGroupBudget(itemGroupId, budgetItemService.allBudgetItems$ | async)}}</td>
-            </tr>
-          </div>
-        </div>
-      </div>
-
-      </td>
-
-      <td>
-        {{budgetItemService.calculateDepartmentBudget(2, budgetItemService.allBudgetItems$ | async)}}
-      </td>
-
-  </tr>
-
-</table>

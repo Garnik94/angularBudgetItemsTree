@@ -1,43 +1,17 @@
 export class BudgetItem {
 
-  private _department_id: number;
-  private _department_nm: string;
-  private _current_department_am: string;
-  private _group_id: number;
-  private _group_nm: string;
-  private _current_group_am: string;
-  private _category_id: number;
-  private _category_nm: string;
-  private _current_cat_am: string;
-  private _sub_cat_id: number;
-  private _sub_cat_nm: string;
-  private _current_sub_cat_am: string;
-
-  constructor(department_id: number,
-              department_nm: string,
-              current_department_am: string,
-              group_id: number,
-              group_nm: string,
-              current_group_am: string,
-              category_id: number,
-              category_nm: string,
-              current_cat_am: string,
-              sub_cat_id: number,
-              sub_cat_nm: string,
-              current_sub_cat_am: string) {
-
-    this._department_id = department_id;
-    this._department_nm = department_nm;
-    this._current_department_am = current_department_am;
-    this._group_id = group_id;
-    this._group_nm = group_nm;
-    this._current_group_am = current_group_am;
-    this._category_id = category_id;
-    this._category_nm = category_nm;
-    this._current_cat_am = current_cat_am;
-    this._sub_cat_id = sub_cat_id;
-    this._sub_cat_nm = sub_cat_nm;
-    this._current_sub_cat_am = current_sub_cat_am;
+  constructor(private _department_id: number,
+              private _department_nm: string,
+              private _current_department_am: string,
+              private _group_id: number,
+              private _group_nm: string,
+              private _current_group_am: string,
+              private _category_id: number,
+              private _category_nm: string,
+              private _current_cat_am: string,
+              private _sub_cat_id: number,
+              private _sub_cat_nm: string,
+              private _current_sub_cat_am: string) {
   }
 
   get department_id(): number {

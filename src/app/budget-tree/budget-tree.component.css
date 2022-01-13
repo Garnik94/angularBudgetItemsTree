@@ -1,8 +1,4 @@
-.flex {
-  /*margin-top: 20px;*/
-  display: flex;
+li {
+  margin-bottom: 10px;
+  /*border-bottom: solid;*/
 }
-
-/*th, tr, td {*/
-/*  border-bottom: solid;*/
-/*}*/
