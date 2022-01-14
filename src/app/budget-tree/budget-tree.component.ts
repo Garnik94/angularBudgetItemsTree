@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {BudgetItemService} from "../service/BudgetItemService";
 import {Observable} from "rxjs";
 import {map} from "rxjs/operators";

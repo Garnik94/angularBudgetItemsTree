@@ -8,30 +8,30 @@
 <ul style="list-style-type: none;">
   {{"JSON depth = " + getLevelsCount(budgetItemService.allBudgetItems$ | async).length}}
   <li
-    *ngFor="let itemDepartmentId of budgetItemService.getDepartmentIdList(budgetItemService.allBudgetItems$ | async); let departmentIndex = index">
+    *ngFor="let itemDepartmentId of (budgetItemService.allBudgetItems$ | async) | getIdLists: 'Department'; let departmentIndex = index">
     <button (click)="isGroupPressed = !isGroupPressed">↓</button>
-
     {{itemDepartmentId | getName: "Department": (budgetItemService.allBudgetItems$ | async)}}
-
-    <span>{{budgetItemService.calculateDepartmentBudget(2, budgetItemService.allBudgetItems$ | async)}}</span>
-
+    <span>{{(budgetItemService.allBudgetItems$ | async) | calculateBudget:itemDepartmentId:'Department'}}</span>
     <ul *ngIf="isGroupPressed" style="list-style-type: none;">
       <li
-        *ngFor="let itemGroupId of budgetItemService.getGroupIdList(budgetItemService.allBudgetItems$ | async); let groupIndex = index">
+        *ngFor="let itemGroupId of (budgetItemService.allBudgetItems$ | async) | getIdLists: 'Group'; let groupIndex = index;">
         <button (click)="isCategoryPressed[groupIndex] = !isCategoryPressed[groupIndex]">↓</button>
         {{itemGroupId | getName: "Group": (budgetItemService.allBudgetItems$ | async)}}
-        <span>{{budgetItemService.calculateGroupBudget(itemGroupId, budgetItemService.allBudgetItems$ | async)}}</span>
+        <span>{{(budgetItemService.allBudgetItems$ | async) | calculateBudget:itemGroupId:'Group'}}</span>
         <ul *ngIf="isCategoryPressed[groupIndex]" style="list-style-type: none;">
           <li
-            *ngFor="let itemCategoryId of budgetItemService.getCategoryIdList(itemGroupId, budgetItemService.allBudgetItems$ | async); let categoryIndex = index">
-            <button (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">↓</button>
+            *ngFor="let itemCategoryId of (budgetItemService.allBudgetItems$ | async) | getIdLists: 'Category': itemGroupId; let categoryIndex = index">
+            <button
+              (click)="isSubCategoryPressed[groupIndex][categoryIndex] = !isSubCategoryPressed[groupIndex][categoryIndex]">
+              ↓
+            </button>
             {{itemCategoryId | getName: "Category": (budgetItemService.allBudgetItems$ | async)}}
-            <span>{{budgetItemService.calculateCategoryBudget(itemCategoryId, budgetItemService.allBudgetItems$ | async)}}</span>
+            <span>{{(budgetItemService.allBudgetItems$ | async) | calculateBudget:itemCategoryId:'Category'}}</span>
             <ul *ngIf="isSubCategoryPressed[groupIndex][categoryIndex]" style="list-style-type: none;">
               <li
-                *ngFor="let itemSubCategoryId of budgetItemService.getSubCategoryIdList(itemCategoryId, budgetItemService.allBudgetItems$ | async)">
+                *ngFor="let itemSubCategoryId of (budgetItemService.allBudgetItems$ | async) | getIdLists : 'SubCategory':itemCategoryId">
                 {{itemSubCategoryId | getName: "SubCategory": (budgetItemService.allBudgetItems$ | async)}}
-                <span>{{budgetItemService.calculateSubCategoryBudget(itemSubCategoryId, budgetItemService.allBudgetItems$ | async)}}</span>
+                <span>{{(budgetItemService.allBudgetItems$ | async) | calculateBudget:itemSubCategoryId:'SubCategory'}}</span>
               </li>
             </ul>
           </li>
